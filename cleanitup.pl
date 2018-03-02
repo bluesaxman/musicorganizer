@@ -5,7 +5,7 @@ use warnings;
 my $inputdir = "./";
 my $outputdir = $inputdir."/Organized - ".`date`;
 my @problemfiles;
-my $bypass = 1;
+my $bypass;
 
 sub prompt {
 	my $type = shift;
