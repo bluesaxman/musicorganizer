@@ -31,13 +31,13 @@ sub moveit {
 	my $source = shift;
 	my $dest = shift;
 	my $info = shift; #this is a hashref
-	my $file = "[".(split(" of ", (split("/", %{$info}{"Track"}))[0]))[0]."]".%{$info}{"Name"}.".".%{$info}{"EXT"};
+	my $file = "[".(split(" of ", (split("/", $info->{"Track"}))[0]))[0]."]".$info->{"Name"}.".".$info->{"EXT"};
 	$file =~ s/\//,/g;
 	unless ( `mkdir -p "$dest" && cp "$source" "$dest$file"` ) {
-		if ( "mp3" eq %{$info}{"EXT"} ) { system('mid3v2 -a "'.%{$info}{"Artist"}.'" -A "'.%{$info}{"Album"}.'" -T "'.%{$info}{"Track"}.'" -t "'.%{$info}{"Name"}.'" "'.$dest.$file.'"'); }
-		if ( "m4a" eq %{$info}{"EXT"} ) { system('mp4tags -a "'.%{$info}{"Artist"}.'" -A "'.%{$info}{"Album"}.'" -t "'.%{$info}{"Track"}.'" -s "'.%{$info}{"Name"}.'" "'.$dest.$file.'"'); }
-		if ( "ogg" eq %{$info}{"EXT"} ) { system('vorbiscomment -at \'album='.%{$info}{"Album"}.'\' -t \'artist='.%{$info}{"Artist"}.'\' -t \'title='.%{$info}{"Name"}.'\' -t \'tracknumber='.%{$info}{"Track"}.'\' "'.$dest.$file.'"'); }
-		if ( "flac" eq %{$info}{"EXT"} ) { system('metaflac --remove-tag=ALBUM --set-tag=\'ALBUM='.%{$info}{"Album"}.'\' --remove-tag=ARTIST --set-tag=\'ARTIST='.%{$info}{"Artist"}.'\' --remove-tag=TITLE --set-tag=\'TITLE='.%{$info}{"Name"}.'\' --remove-tag=TRACKNUMBER --set-tag=\'TRACKNUMBER='.%{$info}{"Track"}.'\' "'.$dest.$file.'"');}
+		if ( "mp3" eq $info->{"EXT"} ) { system('mid3v2 -a "'.$info->{"Artist"}.'" -A "'.$info->{"Album"}.'" -T "'.$info->{"Track"}.'" -t "'.$info->{"Name"}.'" "'.$dest.$file.'"'); }
+		if ( "m4a" eq $info->{"EXT"} ) { system('mp4tags -a "'.$info->{"Artist"}.'" -A "'.$info->{"Album"}.'" -t "'.$info->{"Track"}.'" -s "'.$info->{"Name"}.'" "'.$dest.$file.'"'); }
+		if ( "ogg" eq $info->{"EXT"} ) { system('vorbiscomment -at \'album='.$info->{"Album"}.'\' -t \'artist='.$info->{"Artist"}.'\' -t \'title='.$info->{"Name"}.'\' -t \'tracknumber='.$info->{"Track"}.'\' "'.$dest.$file.'"'); }
+		if ( "flac" eq $info->{"EXT"} ) { system('metaflac --remove-tag=ALBUM --set-tag=\'ALBUM='.$info->{"Album"}.'\' --remove-tag=ARTIST --set-tag=\'ARTIST='.$info->{"Artist"}.'\' --remove-tag=TITLE --set-tag=\'TITLE='.$info->{"Name"}.'\' --remove-tag=TRACKNUMBER --set-tag=\'TRACKNUMBER='.$info->{"Track"}.'\' "'.$dest.$file.'"');}
 	} else {
 		push( @problemfiles, $source );
 	}
